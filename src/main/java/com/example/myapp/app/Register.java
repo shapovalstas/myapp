@@ -3,17 +3,7 @@ package com.example.myapp.app;
 /**
  * Created by sshapoval on 8/5/2014.
  */
-import java.util.ArrayList;
-import java.util.List;
 
-import android.content.Context;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import com.example.myapp.app.validation.Validation;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -21,14 +11,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.example.myapp.app.validation.Validation;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Register extends Activity implements OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
 
-    private EditText user, pass,email, carnumber, phone;
-    private Button  mRegister;
+public class Register extends Activity implements OnClickListener {
+
+    private EditText user, pass, email, carnumber, phone;
+    private Button mRegister;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -36,20 +36,9 @@ public class Register extends Activity implements OnClickListener{
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
 
-    //php login script
-
-    //localhost :
-    //testing on your device
-    //put your local ip instead,  on windows, run CMD > ipconfig
-    //or in mac's terminal type ifconfig and look for the ip under en0 or en1
-    // private static final String LOGIN_URL = "http://xxx.xxx.x.x:1234/webservice/register.php";
-
     //testing on Emulator:
     private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/register.php";
 //    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/register.php";
-
-    //testing from a real server:
-    //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/register.php";
 
     //ids
     private static final String TAG_SUCCESS = "success";
@@ -61,13 +50,13 @@ public class Register extends Activity implements OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
 
-        user = (EditText)findViewById(R.id.username);
-        pass = (EditText)findViewById(R.id.password);
-        email = (EditText)findViewById(R.id.email);
+        user = (EditText) findViewById(R.id.username);
+        pass = (EditText) findViewById(R.id.password);
+        email = (EditText) findViewById(R.id.email);
         carnumber = (EditText) findViewById(R.id.carnumber);
         phone = (EditText) findViewById(R.id.phone);
 
-        mRegister = (Button)findViewById(R.id.register);
+        mRegister = (Button) findViewById(R.id.register);
         mRegister.setOnClickListener(this);
 
     }
@@ -75,28 +64,41 @@ public class Register extends Activity implements OnClickListener{
     @Override
     public void onClick(View v) {
         Validation validation = new Validation();
+        CreateUser createUser = new CreateUser();
+        boolean noError = true;
         // TODO Auto-generated method stub
-        if(user.length()<6){
-            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            user.startAnimation(shake);
-            user.setError("bla");
+        if (!validation.isValidUsername(user.getText().toString())) {
+            noError = false;
+            showError(user, "Please, enter the correct name");
         }
-        if(!validation.isValidEmail(email.getText().toString())){
-            Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            email.startAnimation(shake);
-            email.setError("Wrong email");
+        if (!validation.isValidPassword(pass.getText().toString())) {
+            noError = false;
+           showError(pass, "Please, enter the correct password (Minimum 6 characters at least 1 Alphabet and 1 Number)");
+
         }
-//        new CreateUser().execute();
+        if (!validation.isValidEmail(email.getText().toString())) {
+            noError = false;
+            showError(email, "Please, enter the correct email");
+
+        }
+        if (!validation.isValidPhone(phone.getText().toString())) {
+            noError = false;
+            showError(phone, "Please, enter the correct phone number");
+        }
+        if (carnumber.getText().length() == 0) {
+            noError = false;
+            showError(carnumber, "Please, enter the car number");
+        }
+        if (noError) {
+            createUser.execute();
+        }
 
     }
 
     class CreateUser extends AsyncTask<String, String, String> {
         /**
          * Before starting background thread Show Progress Dialog
-         * */
-        boolean failure = false;
-
-
+         */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -113,10 +115,6 @@ public class Register extends Activity implements OnClickListener{
             // Check for success tag
             int success;
             String username = user.getText().toString();
-            if (user.length()<6){
-
-            }
-
             String password = pass.getText().toString();
             String emailadr = email.getText().toString();
             String carnumb = carnumber.getText().toString();
@@ -145,7 +143,7 @@ public class Register extends Activity implements OnClickListener{
                     Log.d("User Created!", json.toString());
                     finish();
                     return json.getString(TAG_MESSAGE);
-                }else{
+                } else {
                     Log.d("Login Failure!", json.getString(TAG_MESSAGE));
                     return json.getString(TAG_MESSAGE);
 
@@ -157,19 +155,27 @@ public class Register extends Activity implements OnClickListener{
             return null;
 
         }
+
         /**
          * After completing background task Dismiss the progress dialog
-         * **/
+         * *
+         */
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
-            if (file_url != null){
+            if (file_url != null) {
                 Toast.makeText(Register.this, file_url, Toast.LENGTH_LONG).show();
             }
 
         }
 
     }
+    public void showError(EditText editText, String message) {
+        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        editText.startAnimation(shake);
+        editText.setError(message);
+    }
+
 
 
 }

@@ -3,18 +3,6 @@ package com.example.myapp.app.login;
 /**
  * Created by sshapoval on 8/5/2014.
  */
-import java.util.ArrayList;
-import java.util.List;
-
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import com.example.myapp.app.JSONParser;
-import com.example.myapp.app.R;
-import com.example.myapp.app.Register;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -24,35 +12,38 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.example.myapp.app.JSONParser;
+import com.example.myapp.app.R;
+import com.example.myapp.app.Register;
+import com.example.myapp.app.Search;
+import com.example.myapp.app.validation.Validation;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Login extends Activity implements OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
+
+public class Login extends Activity implements OnClickListener {
 
     private EditText user, pass;
     private Button mSubmit, mRegister;
-//    private Map<Integer, >
+
     // Progress Dialog
     private ProgressDialog pDialog;
 
     // JSON parser class
     JSONParser jsonParser = new JSONParser();
 
-    //php login script location:
 
-    //localhost :
-    //testing on your device
-    //put your local ip instead,  on windows, run CMD > ipconfig
-    //or in mac's terminal type ifconfig and look for the ip under en0 or en1
-    // private static final String LOGIN_URL = "http://xxx.xxx.x.x:1234/webservice/login.php";
-
-    //testing on Emulator:
-//    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
-    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
-
-    //testing from a real server:
-    //private static final String LOGIN_URL = "http://www.yourdomain.com/webservice/login.php";
+    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
+//    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
 
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
@@ -65,15 +56,12 @@ public class Login extends Activity implements OnClickListener{
         setContentView(R.layout.login);
 
         //setup input fields
-        user = (EditText)findViewById(R.id.username);
-        if (user.length()<6){
-            showError();
-        }
-        pass = (EditText)findViewById(R.id.password);
+        user = (EditText) findViewById(R.id.username);
+        pass = (EditText) findViewById(R.id.password);
 
         //setup buttonst4
-        mSubmit = (Button)findViewById(R.id.login);
-        mRegister = (Button)findViewById(R.id.register);
+        mSubmit = (Button) findViewById(R.id.login);
+        mRegister = (Button) findViewById(R.id.register);
 
         //register listeners
         mSubmit.setOnClickListener(this);
@@ -83,10 +71,22 @@ public class Login extends Activity implements OnClickListener{
 
     @Override
     public void onClick(View v) {
+        boolean noError = true;
         // TODO Auto-generated method stub
+
         switch (v.getId()) {
             case R.id.login:
-                new AttemptLogin().execute();
+                if (user.getText().length() == 0) {
+                    noError = false;
+                    showError(user, "Please, enter the name");
+                }
+                if (pass.getText().length() == 0) {
+                    noError = false;
+                    showError(pass, "Please, enter the password");
+                }
+                if (noError) {
+                    new AttemptLogin().execute();
+                }
                 break;
             case R.id.register:
                 Intent i = new Intent(this, Register.class);
@@ -102,7 +102,7 @@ public class Login extends Activity implements OnClickListener{
 
         /**
          * Before starting background thread Show Progress Dialog
-         * */
+         */
         boolean failure = false;
 
         @Override
@@ -121,8 +121,6 @@ public class Login extends Activity implements OnClickListener{
             // Check for success tag
             int success;
             String username = user.getText().toString();
-
-
             String password = pass.getText().toString();
             try {
                 // Building Parameters
@@ -142,11 +140,11 @@ public class Login extends Activity implements OnClickListener{
                 success = json.getInt(TAG_SUCCESS);
                 if (success == 1) {
                     Log.d("Login Successful!", json.toString());
-//                    Intent i = new Intent(Login.this, ReadComments.class);
+                    Intent i = new Intent(Login.this, Search.class);
                     finish();
-//                    startActivity(i);
+                    startActivity(i);
                     return json.getString(TAG_MESSAGE);
-                }else{
+                } else {
                     Log.d("Login Failure!", json.getString(TAG_MESSAGE));
                     return json.getString(TAG_MESSAGE);
 
@@ -158,22 +156,26 @@ public class Login extends Activity implements OnClickListener{
             return null;
 
         }
+
         /**
          * After completing background task Dismiss the progress dialog
-         * **/
+         * *
+         */
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once product deleted
             pDialog.dismiss();
-            if (file_url != null){
+            if (file_url != null) {
                 Toast.makeText(Login.this, file_url, Toast.LENGTH_LONG).show();
             }
 
         }
 
     }
-    private void showError(){
+
+    public void showError(EditText editText, String message) {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
-        user.startAnimation(shake);
+        editText.startAnimation(shake);
+        editText.setError(message);
     }
 
 

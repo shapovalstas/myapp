@@ -10,6 +10,21 @@ import java.util.regex.Pattern;
  */
 public class Validation extends Activity {
 
+    //validation username
+    public boolean isValidUsername(String username){
+        String USERNAME_PATTERN = "^[а-яА-ЯёЁa-zA-Z]{5,20}$";
+        Pattern pattern = Pattern.compile(USERNAME_PATTERN);
+        Matcher matcher = pattern.matcher(username);
+        return matcher.matches();
+    }
+
+    public boolean isValidPassword(String password){
+        String PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$";
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
     //validating email
     public boolean isValidEmail (String email){
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -20,5 +35,11 @@ public class Validation extends Activity {
         return matcher.matches();
     }
 
-
+    public boolean isValidPhone(String phone){
+        String PHONE_PATTERN = "^(([(]?(\\d{2,4})[)]?)|(\\d{2,4})|([+1-9]+\\d{1,2}))" +
+                "?[-\\s]?(\\d{2,3})?[-\\s]?((\\d{7,8})|(\\d{3,4}[-\\s]\\d{3,4}))$";
+        Pattern pattern = Pattern.compile(PHONE_PATTERN);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
 }
