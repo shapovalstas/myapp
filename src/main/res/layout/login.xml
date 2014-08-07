@@ -1,87 +1,58 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   >
-
-    <Button
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/login"
-        android:layout_marginBottom="25dp"
-        android:text="Register" />
-
-    <Button
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/register"
-        android:layout_alignLeft="@+id/password"
-        android:layout_alignRight="@+id/password"
-        android:text="Login"/>
+<RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="#f3d0d8ff">
 
     <EditText
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:maxLines="1"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:gravity="center"
-        android:text="Android Remote Server Tutorial"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"/>
-        <!--android:src="@drawable/arrowstars" />-->
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/password"
-        android:layout_alignLeft="@+id/password"
-        android:layout_marginLeft="22dp"
-        android:text="Password" />
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="38dp"
+            android:layout_gravity="center"
+            android:id="@+id/email"
+            android:background="#ffffffff"
+            android:hint="Email"
+            android:textColorHint="#3a010000"
+            android:textColor="#ff010101"
+            android:inputType="textEmailAddress"
+            android:clickable="true"
+            android:ems="20"
+            android:cursorVisible="true"
+            android:editable="true"
+            android:textCursorDrawable="@drawable/black_cursor"
+            />
 
     <EditText
-        android:id="@+id/username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/TextView01"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:maxLines="1"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:inputType="text">
-        <requestFocus />
-        </EditText>
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="38dp"
+            android:id="@+id/password"
+            android:layout_gravity="center_horizontal"
+            android:background="#ffffffff"
+            android:hint="Password"
+            android:textColorHint="#3a010000"
+            android:textColor="#ff010101"
+            android:inputType="textPassword"
+            android:layout_below="@+id/email"
+            android:layout_alignParentLeft="true"
+            android:textCursorDrawable="@drawable/black_cursor"/>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/TextView01"
-        android:layout_centerVertical="true"
-        android:text="Username" />
+
+    <Button
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="38dp"
+            android:text="Log In"
+            android:id="@+id/login_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/password"
+            android:layout_alignParentLeft="true"/>
 
 </RelativeLayout>

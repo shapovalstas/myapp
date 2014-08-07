@@ -37,8 +37,8 @@ public class Register extends Activity implements OnClickListener {
     JSONParser jsonParser = new JSONParser();
 
     //testing on Emulator:
-    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/register.php";
-//    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/register.php";
+//    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/register.php";
+    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/register.php";
 
     //ids
     private static final String TAG_SUCCESS = "success";

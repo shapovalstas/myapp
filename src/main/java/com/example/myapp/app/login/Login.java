@@ -32,8 +32,8 @@ import java.util.List;
 
 public class Login extends Activity implements OnClickListener {
 
-    private EditText user, pass;
-    private Button mSubmit, mRegister;
+    private EditText email, pass;
+    private Button mSubmit;
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -42,8 +42,8 @@ public class Login extends Activity implements OnClickListener {
     JSONParser jsonParser = new JSONParser();
 
 
-    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
-//    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
+//    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
+    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
 
     //JSON element ids from repsonse of php script:
     private static final String TAG_SUCCESS = "success";
@@ -56,17 +56,11 @@ public class Login extends Activity implements OnClickListener {
         setContentView(R.layout.login);
 
         //setup input fields
-        user = (EditText) findViewById(R.id.username);
+        email = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.password);
 
-        //setup buttonst4
-        mSubmit = (Button) findViewById(R.id.login);
-        mRegister = (Button) findViewById(R.id.register);
-
-        //register listeners
+        mSubmit = (Button) findViewById(R.id.login_button);
         mSubmit.setOnClickListener(this);
-        mRegister.setOnClickListener(this);
-
     }
 
     @Override
@@ -74,11 +68,11 @@ public class Login extends Activity implements OnClickListener {
         boolean noError = true;
         // TODO Auto-generated method stub
 
-        switch (v.getId()) {
-            case R.id.login:
-                if (user.getText().length() == 0) {
+//        switch (v.getId()) {
+//            case R.id.login_button:
+                if (email.getText().length() == 0) {
                     noError = false;
-                    showError(user, "Please, enter the name");
+                    showError(email, "Please, enter the name");
                 }
                 if (pass.getText().length() == 0) {
                     noError = false;
@@ -87,15 +81,25 @@ public class Login extends Activity implements OnClickListener {
                 if (noError) {
                     new AttemptLogin().execute();
                 }
-                break;
-            case R.id.register:
-                Intent i = new Intent(this, Register.class);
-                startActivity(i);
-                break;
+//                break;
+//            case R.id.register:
+//                Intent i = new Intent(this, Register.class);
+//                startActivity(i);
+//                break;
+//
+//            default:
+//                break;
+//        }
 
-            default:
-                break;
-        }
+    }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this, Main.class);
+//        intent.addCategory(Intent.CATEGORY_HOME);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+
     }
 
     class AttemptLogin extends AsyncTask<String, String, String> {
@@ -120,12 +124,12 @@ public class Login extends Activity implements OnClickListener {
             // TODO Auto-generated method stub
             // Check for success tag
             int success;
-            String username = user.getText().toString();
+            String username = email.getText().toString();
             String password = pass.getText().toString();
             try {
                 // Building Parameters
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("username", username));
+                params.add(new BasicNameValuePair("email", username));
                 params.add(new BasicNameValuePair("password", password));
 
                 Log.d("request!", "starting");
