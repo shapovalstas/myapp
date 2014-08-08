@@ -9,7 +9,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -17,11 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.example.myapp.app.JSONParser;
-import com.example.myapp.app.R;
-import com.example.myapp.app.Register;
-import com.example.myapp.app.Search;
-import com.example.myapp.app.validation.Validation;
+import com.example.myapp.app.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -54,7 +53,7 @@ public class Login extends Activity implements OnClickListener {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         //setup input fields
         email = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.password);
@@ -100,6 +99,32 @@ public class Login extends Activity implements OnClickListener {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    // This activity is NOT part of this app's task, so create a new task
+                    // when navigating up, with a synthesized back stack.
+                    TaskStackBuilder.create(this)
+                            // Add all of this activity's parents to the back stack
+                            .addNextIntentWithParentStack(upIntent)
+                                    // Navigate up to the closest parent
+                            .startActivities();
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                } else {
+                    // This activity is part of this app's task, so simply
+                    // navigate up to the logical parent activity.
+                    NavUtils.navigateUpTo(this, upIntent);
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     class AttemptLogin extends AsyncTask<String, String, String> {

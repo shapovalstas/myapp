@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Base.AppCompat" >
         <activity
-                android:name="com.example.myapp.app.login.Main"
+                android:name=".Main"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,7 +20,11 @@
         </activity>
         <activity
                 android:name="com.example.myapp.app.login.Login"
-                android:label="@string/app_name" >
+                android:label="@string/app_name"
+                android:parentActivityName=".Main">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="com.example.myapp.app.Main" />
         </activity>
         <activity
             android:name="com.example.myapp.app.Register"

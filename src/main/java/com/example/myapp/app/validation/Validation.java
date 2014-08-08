@@ -12,7 +12,7 @@ public class Validation extends Activity {
 
     //validation username
     public boolean isValidUsername(String username){
-        String USERNAME_PATTERN = "^[а-яА-ЯёЁa-zA-Z]{5,20}$";
+        String USERNAME_PATTERN = "^[а-яА-ЯёЁa-zA-Z]{2,20}$";
         Pattern pattern = Pattern.compile(USERNAME_PATTERN);
         Matcher matcher = pattern.matcher(username);
         return matcher.matches();
