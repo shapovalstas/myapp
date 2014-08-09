@@ -16,7 +16,7 @@
             android:layout_alignParentBottom="true">
 
         <Button
-                android:id="@+id/log_in"
+                android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -26,7 +26,7 @@
                 android:layout_weight="1"/>
 
         <Button
-                android:id="@+id/sign_up"
+                android:id="@+id/btnSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="10dp"
@@ -36,6 +36,14 @@
                 style="@style/DefaultButtonText"
                 android:layout_weight="1"/>
     </LinearLayout>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/cars"/>
 
 
 </RelativeLayout>

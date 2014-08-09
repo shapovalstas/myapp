@@ -38,15 +38,18 @@ public class Login extends Activity implements OnClickListener {
     private ProgressDialog pDialog;
 
     // JSON parser class
-    JSONParser jsonParser = new JSONParser();
 
 
 //    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
     private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
 
     //JSON element ids from repsonse of php script:
-    private static final String TAG_SUCCESS = "success";
+    private static final String KEY_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
+    private static String KEY_UID = "uid";
+    private static String KEY_NAME = "name";
+    private static String KEY_EMAIL = "email";
+    private static String KEY_CREATED_AT = "created_at";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +70,6 @@ public class Login extends Activity implements OnClickListener {
         boolean noError = true;
         // TODO Auto-generated method stub
 
-//        switch (v.getId()) {
-//            case R.id.login_button:
                 if (email.getText().length() == 0) {
                     noError = false;
                     showError(email, "Please, enter the name");
@@ -80,22 +81,10 @@ public class Login extends Activity implements OnClickListener {
                 if (noError) {
                     new AttemptLogin().execute();
                 }
-//                break;
-//            case R.id.register:
-//                Intent i = new Intent(this, Register.class);
-//                startActivity(i);
-//                break;
-//
-//            default:
-//                break;
-//        }
-
     }
     @Override
     public void onBackPressed(){
         Intent intent = new Intent(this, Main.class);
-//        intent.addCategory(Intent.CATEGORY_HOME);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
 
@@ -151,34 +140,28 @@ public class Login extends Activity implements OnClickListener {
             int success;
             String username = email.getText().toString();
             String password = pass.getText().toString();
+            UserFunctions userFunction = new UserFunctions();
+            JSONObject json = userFunction.loginUser(username,password);
             try {
-                // Building Parameters
-                List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("email", username));
-                params.add(new BasicNameValuePair("password", password));
+                if(json.getString(KEY_SUCCESS) !=null){
+                    String res = json.getString(KEY_SUCCESS);
+                    if(Integer.parseInt(res) == 1){
+                        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                        JSONObject json_user = json.getJSONObject("user");
 
-                Log.d("request!", "starting");
-                // getting product details by making HTTP request
-                JSONObject json = jsonParser.makeHttpRequest(
-                        LOGIN_URL, "POST", params);
+                        userFunction.logoutUser(getApplicationContext());
+                        db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
+                        Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
 
-                // check your log for json response
-                Log.d("Login attempt", json.toString());
+                        // Close all views before launching Dashboard
+                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(dashboard);
 
-                // json success tag
-                success = json.getInt(TAG_SUCCESS);
-                if (success == 1) {
-                    Log.d("Login Successful!", json.toString());
-                    Intent i = new Intent(Login.this, Search.class);
-                    finish();
-                    startActivity(i);
-                    return json.getString(TAG_MESSAGE);
-                } else {
-                    Log.d("Login Failure!", json.getString(TAG_MESSAGE));
-                    return json.getString(TAG_MESSAGE);
-
+                        // Close Login Screen
+                        finish();
+                    }
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
