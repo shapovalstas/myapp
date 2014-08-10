@@ -6,9 +6,8 @@ package com.example.myapp.app;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -17,86 +16,44 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
-import com.example.myapp.app.validation.Validation;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Register extends Activity implements OnClickListener {
 
     private EditText firstName, lastName;
     private RadioButton male, female;
-    private Button next;
+    private Button btnGooglePlus,btnTwitter,btnFacebook,btnEmail;
 
     // Progress Dialog
     private ProgressDialog pDialog;
-
-    // JSON parser class
-    JSONParser jsonParser = new JSONParser();
-
-    //testing on Emulator:
-//    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/register.php";
-    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/register.php";
-
     //ids
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
-
-        firstName = (EditText) findViewById(R.id.first_name);
-        lastName = (EditText) findViewById(R.id.last_name);
-        male = (RadioButton) findViewById(R.id.male);
-        female = (RadioButton) findViewById(R.id.famale);
-        next = (Button) findViewById(R.id.nextUser);
-        next.setOnClickListener(this);
+        setContentView(R.layout.signup_social);
+        btnEmail = (Button) findViewById(R.id.btnEmail);
+        btnEmail.setOnClickListener(this);
+//        firstName = (EditText) findViewById(R.id.first_name);
+//        lastName = (EditText) findViewById(R.id.last_name);
+//        male = (RadioButton) findViewById(R.id.male);
+//        female = (RadioButton) findViewById(R.id.famale);
+//        next = (Button) findViewById(R.id.nextUser);
+//        next.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
-        Validation validation = new Validation();
-//        CreateUser createUser = new CreateUser();
-        boolean noError = true;
-        // TODO Auto-generated method stub
-        if (!validation.isValidUsername(firstName.getText().toString()) || !validation.isValidUsername(lastName.getText().toString())) {
-            noError = false;
-            showError(firstName, "Please, enter the correct name");
+        switch (v.getId()) {
+            case R.id.btnEmail:
+                Intent registerWithEmail = new Intent(this, RegisterWithEmail.class);
+                startActivity(registerWithEmail);
+                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                break;
+            default:
+                break;
         }
-        if (!validation.isValidUsername(lastName.getText().toString())) {
-            noError = false;
-            showError(lastName, "Please, enter the correct name");
-        }
-//        if (!validation.isValidPassword(pass.getText().toString())) {
-//            noError = false;
-//           showError(pass, "Please, enter the correct password (Minimum 6 characters at least 1 Alphabet and 1 Number)");
-//
-//        }
-//        if (!validation.isValidEmail(email.getText().toString())) {
-//            noError = false;
-//            showError(email, "Please, enter the correct email");
-//
-//        }
-//        if (!validation.isValidPhone(phone.getText().toString())) {
-//            noError = false;
-//            showError(phone, "Please, enter the correct phone number");
-//        }
-//        if (carnumber.getText().length() == 0) {
-//            noError = false;
-//            showError(carnumber, "Please, enter the car number");
-//        }
-//        if (noError) {
-//            createUser.execute();
-//        }
-
     }
 
 //    class CreateUser extends AsyncTask<String, String, String> {

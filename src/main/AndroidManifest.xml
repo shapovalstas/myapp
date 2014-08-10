@@ -7,11 +7,11 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Base.AppCompat" >
+        android:label="@string/app_name" >
         <activity
-                android:name=".Main"
-                android:label="@string/app_name">
+            android:name="com.example.myapp.app.Main"
+            android:label="@string/app_name"
+                android:theme="@style/TransparentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +19,12 @@
             </intent-filter>
         </activity>
         <activity
-                android:name="com.example.myapp.app.login.Login"
-                android:label="@string/app_name"
-                android:parentActivityName=".Main">
+            android:name="com.example.myapp.app.login.Login"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.myapp.app.Main" >
             <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.example.myapp.app.Main" />
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.myapp.app.Main" />
         </activity>
         <activity
             android:name="com.example.myapp.app.Register"
@@ -34,6 +34,10 @@
             android:name="com.example.myapp.app.DashboardActivity"
             android:label="@string/app_name" >
         </activity>
-    </application>
+        <activity
+                android:name="com.example.myapp.app.RegisterWithEmail"
+                android:label="@string/app_name" >
+        </activity>
 
+    </application>
 </manifest>

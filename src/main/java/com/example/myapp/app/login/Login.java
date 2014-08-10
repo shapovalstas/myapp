@@ -11,7 +11,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,13 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.example.myapp.app.*;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Login extends Activity implements OnClickListener {
 
@@ -63,6 +58,14 @@ public class Login extends Activity implements OnClickListener {
 
         mSubmit = (Button) findViewById(R.id.login_button);
         mSubmit.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar, menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -150,7 +153,7 @@ public class Login extends Activity implements OnClickListener {
                         JSONObject json_user = json.getJSONObject("user");
 
                         userFunction.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
+//                        db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
                         Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
 
                         // Close all views before launching Dashboard

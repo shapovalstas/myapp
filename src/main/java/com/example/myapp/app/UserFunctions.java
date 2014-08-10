@@ -1,7 +1,6 @@
 package com.example.myapp.app;
 
 import android.content.Context;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -46,15 +45,17 @@ public class UserFunctions {
 
     /**
      * function make Login Request
-     * @param name
+     * @param firstName
+     * @param lastName
      * @param email
      * @param password
      * */
-    public JSONObject registerUser(String name, String email, String password){
+    public JSONObject registerUser(String firstName, String lastName, String email, String password){
         // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("tag", register_tag));
-        params.add(new BasicNameValuePair("name", name));
+        params.add(new BasicNameValuePair("first_name", firstName));
+        params.add(new BasicNameValuePair("last_name", lastName));
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
 
