@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import org.json.JSONObject;
 
 /**
@@ -21,7 +22,6 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
     private ProgressDialog pDialog;
     private static final String KEY_SUCCESS = "success";
     // Login Table Columns names
-    private static final String KEY_ID = "id";
     private static final String KEY_FIRST_NAME = "first_name";
     private static final String KEY_LAST_NAME = "last_name";
     private static final String KEY_EMAIL = "email";
@@ -59,7 +59,7 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(RegisterWithEmail.this);
-            pDialog.setMessage("Attempting login...");
+            pDialog.setMessage("Attempting register...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(true);
             pDialog.show();
@@ -75,7 +75,7 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
             String firstName = editTextFirstName.getText().toString();
             String lastName = editTextLastName.getText().toString();
             UserFunctions userFunction = new UserFunctions();
-            JSONObject json = userFunction.registerUser(firstName,lastName,email,password);
+            JSONObject json = userFunction.registerUser(firstName, lastName, email, password);
             try {
                 if(json.getString(KEY_SUCCESS) !=null){
                     String res = json.getString(KEY_SUCCESS);
@@ -85,6 +85,7 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
 
                         userFunction.logoutUser(getApplicationContext());
                         db.addUser(json_user.getString(KEY_FIRST_NAME), json_user.getString(KEY_LAST_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
+
                         Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
 
                         // Close all views before launching Dashboard
@@ -103,4 +104,14 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
 
         }
 }
+    protected void onPostExecute(String file_url) {
+        // dismiss the dialog once product deleted
+        pDialog.dismiss();
+        if (file_url != null) {
+            Toast.makeText(RegisterWithEmail.this, file_url, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
 }
