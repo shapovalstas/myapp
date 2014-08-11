@@ -1,11 +1,19 @@
 package com.example.myapp.app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 import com.example.myapp.app.login.Login;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Created by sshapoval on 8/9/2014.
@@ -14,6 +22,8 @@ public class DashboardActivity extends Activity {
 
     UserFunctions userFunctions;
     Button btnLogout;
+    TextView firstandlast;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +33,14 @@ public class DashboardActivity extends Activity {
          * */
         // Check login status in database
         userFunctions = new UserFunctions();
-        if(userFunctions.isUserLoggedIn(getApplicationContext())){
+        if (userFunctions.isUserLoggedIn(getApplicationContext())) {
             setContentView(R.layout.dashboard);
+            firstandlast = (TextView) findViewById(R.id.firstandlast);
             btnLogout = (Button) findViewById(R.id.btnLogout);
+            DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+            HashMap<String,String> user;
+            user = db.getUserDetails();
+            firstandlast.setText(user.get("first_name")+" " + user.get("last_name"));
 
             btnLogout.setOnClickListener(new View.OnClickListener() {
 
@@ -39,8 +54,7 @@ public class DashboardActivity extends Activity {
                     finish();
                 }
             });
-
-        }else{
+        } else {
             // user is not logged in show login screen
             Intent login = new Intent(getApplicationContext(), Login.class);
             login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -48,9 +62,5 @@ public class DashboardActivity extends Activity {
             // Closing dashboard screen
             finish();
         }
-
-
-
-
     }
 }

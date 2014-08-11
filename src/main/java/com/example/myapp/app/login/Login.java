@@ -4,11 +4,17 @@ package com.example.myapp.app.login;
  * Created by sshapoval on 8/5/2014.
  */
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.Menu;
@@ -18,34 +24,33 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 import com.example.myapp.app.*;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Pattern;
+
 public class Login extends Activity implements OnClickListener {
 
-    private EditText email, pass;
+    private EditText pass;
+    private AutoCompleteTextView email;
     private Button mSubmit;
 
     // Progress Dialog
     private ProgressDialog pDialog;
 
-    // JSON parser class
-
-
-//    private static final String LOGIN_URL = "http://172.31.35.100:1234/webservices/login.php";
-    private static final String LOGIN_URL = "http://192.168.0.100:1234/webservices/login.php";
-
     //JSON element ids from repsonse of php script:
     private static final String KEY_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
-    private static String KEY_UID = "uid";
-    private static String KEY_NAME = "name";
-    private static String KEY_EMAIL = "email";
-    private static String KEY_CREATED_AT = "created_at";
-
+    private static final String KEY_FIRST_NAME = "first_name";
+    private static final String KEY_LAST_NAME = "last_name";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_UID = "uid";
+    private static final String KEY_CREATED_AT = "created_at";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -53,9 +58,9 @@ public class Login extends Activity implements OnClickListener {
         setContentView(R.layout.login);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         //setup input fields
-        email = (EditText) findViewById(R.id.email);
         pass = (EditText) findViewById(R.id.password);
-
+        email = (AutoCompleteTextView) findViewById(R.id.email);
+        email.setAdapter(getEmailAddressAdapter(this));
         mSubmit = (Button) findViewById(R.id.login_button);
         mSubmit.setOnClickListener(this);
     }
@@ -81,7 +86,8 @@ public class Login extends Activity implements OnClickListener {
                     noError = false;
                     showError(pass, "Please, enter the password");
                 }
-                if (noError) {
+
+        if (noError) {
                     new AttemptLogin().execute();
                 }
     }
@@ -153,7 +159,7 @@ public class Login extends Activity implements OnClickListener {
                         JSONObject json_user = json.getJSONObject("user");
 
                         userFunction.logoutUser(getApplicationContext());
-//                        db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
+                        db.addUser(json_user.getString(KEY_FIRST_NAME), json_user.getString(KEY_LAST_NAME), json_user.getString(KEY_EMAIL), json.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
                         Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
 
                         // Close all views before launching Dashboard
@@ -191,6 +197,15 @@ public class Login extends Activity implements OnClickListener {
         Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
         editText.startAnimation(shake);
         editText.setError(message);
+    }
+
+    private ArrayAdapter<String> getEmailAddressAdapter(Context context) {
+        Account[] accounts = AccountManager.get(context).getAccountsByType("com.google");
+        String[] addresses = new String[accounts.length];
+        for (int i = 0; i < accounts.length; i++) {
+            addresses[i] = accounts[i].name;
+        }
+        return new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, addresses);
     }
 
 
