@@ -1,6 +1,8 @@
-package com.example.myapp.app;
+package com.example.myapp.app.utils;
 
 import android.content.Context;
+import com.example.myapp.app.utils.DatabaseHandler;
+import com.example.myapp.app.utils.JSONParser;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -15,8 +17,11 @@ public class UserFunctions {
 
     private JSONParser jsonParser;
 
-    private static String loginURL = "http://192.168.0.101:1234/androidapi/";
-    private static String registerURL = "http://192.168.0.101:1234/androidapi/";
+//    private static String loginURL = "http://192.168.0.101:1234/androidapi/";
+//    private static String registerURL = "http://192.168.0.101:1234/androidapi/";
+
+    private static String loginURL = "http://172.31.35.100:1234/androidapi/";
+    private static String registerURL = "http://172.31.35.100:1234/androidapi/";
 
     private static String login_tag = "login";
     private static String register_tag = "register";
@@ -38,8 +43,6 @@ public class UserFunctions {
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
         JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
-        // return json
-        // Log.e("JSON", json.toString());
         return json;
     }
 

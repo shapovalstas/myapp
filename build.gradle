@@ -12,9 +12,15 @@ repositories {
     mavenCentral()
 }
 
+repositories{
+    maven{
+    url 'https://oss.sonatype.org/content/groups/public'
+    }
+}
+
 android {
     compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         minSdkVersion 15
@@ -35,4 +41,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.+'
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:20.0.+'
+    compile 'com.shamanland:facebook-android-sdk:3.15.0-SNAPSHOT'
 }

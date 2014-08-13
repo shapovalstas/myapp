@@ -27,7 +27,7 @@
                 android:background="@drawable/layers_gplus_button_bg"
                 android:text="Google+"
                 style="@style/ButtonText"/>
-        <Button
+        <com.facebook.widget.LoginButton
                 android:id="@+id/btnFb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.example.myapp.app.login;
+package com.example.myapp.app.activity;
 
 /**
  * Created by sshapoval on 8/5/2014.
@@ -8,13 +8,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.view.Menu;
@@ -26,11 +23,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.example.myapp.app.*;
+import com.example.myapp.app.utils.DatabaseHandler;
+import com.example.myapp.app.utils.UserFunctions;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Login extends Activity implements OnClickListener {
@@ -96,7 +92,8 @@ public class Login extends Activity implements OnClickListener {
         Intent intent = new Intent(this, Main.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-
+        finish();
+        super.onBackPressed();
     }
 
     @Override

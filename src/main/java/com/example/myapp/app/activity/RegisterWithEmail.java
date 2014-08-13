@@ -1,4 +1,4 @@
-package com.example.myapp.app;
+package com.example.myapp.app.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.example.myapp.app.R;
+import com.example.myapp.app.utils.DatabaseHandler;
+import com.example.myapp.app.utils.UserFunctions;
 import org.json.JSONObject;
 
 /**
@@ -104,13 +107,15 @@ public class RegisterWithEmail extends Activity implements View.OnClickListener 
 
         }
 }
-    protected void onPostExecute(String file_url) {
-        // dismiss the dialog once product deleted
-        pDialog.dismiss();
-        if (file_url != null) {
-            Toast.makeText(RegisterWithEmail.this, file_url, Toast.LENGTH_LONG).show();
-        }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent intent = new Intent(this, ChoiceRegistrationActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+        finish();
     }
 
 

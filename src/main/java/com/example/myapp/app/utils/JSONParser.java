@@ -1,4 +1,4 @@
-package com.example.myapp.app;
+package com.example.myapp.app.utils;
 
 import android.util.Log;
 import org.apache.http.HttpEntity;

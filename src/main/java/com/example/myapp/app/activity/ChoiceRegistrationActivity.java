@@ -1,4 +1,4 @@
-package com.example.myapp.app;
+package com.example.myapp.app.activity;
 
 /**
  * Created by sshapoval on 8/5/2014.
@@ -16,13 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
+import com.example.myapp.app.R;
+import com.facebook.widget.LoginButton;
 
-public class Register extends Activity implements OnClickListener {
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ChoiceRegistrationActivity extends Activity implements OnClickListener {
 
     private EditText firstName, lastName;
     private RadioButton male, female;
-    private Button btnGooglePlus,btnTwitter,btnFacebook,btnEmail;
-
+    private Button btnGooglePlus,btnTwitter,btnEmail;
+    private LoginButton  btnFacebook;
     // Progress Dialog
     private ProgressDialog pDialog;
     //ids
@@ -33,6 +39,8 @@ public class Register extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_social);
         btnEmail = (Button) findViewById(R.id.btnEmail);
+        btnFacebook = (LoginButton) findViewById(R.id.btnFb);
+        btnFacebook.setOnClickListener(this);
         btnEmail.setOnClickListener(this);
 //        firstName = (EditText) findViewById(R.id.first_name);
 //        lastName = (EditText) findViewById(R.id.last_name);
@@ -48,8 +56,18 @@ public class Register extends Activity implements OnClickListener {
         switch (v.getId()) {
             case R.id.btnEmail:
                 Intent registerWithEmail = new Intent(this, RegisterWithEmail.class);
+                registerWithEmail.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(registerWithEmail);
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                finish();
+                break;
+            case R.id.btnFb:
+                btnFacebook.setReadPermissions(Arrays.asList("basic_info","email"));
+                Intent facebook = new Intent(this, RegisterWithFacebook.class);
+//                facebook.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(facebook);
+                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                finish();
                 break;
             default:
                 break;
@@ -117,24 +135,23 @@ public class Register extends Activity implements OnClickListener {
 //
 //        }
 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * *
-         */
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once product deleted
-            pDialog.dismiss();
-            if (file_url != null) {
-                Toast.makeText(Register.this, file_url, Toast.LENGTH_LONG).show();
-            }
 
-        }
 
 //    }
     public void showError(EditText editText, String message) {
-        Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+        android.view.animation.Animation shake = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.shake);
         editText.startAnimation(shake);
         editText.setError(message);
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        android.content.Intent intent = new android.content.Intent(this, Main.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+        finish();
     }
 
 
