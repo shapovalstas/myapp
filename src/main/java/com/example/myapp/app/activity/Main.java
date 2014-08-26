@@ -21,7 +21,6 @@ import static android.view.View.OnClickListener;
 
 public class Main extends Activity implements OnClickListener {
     private Button mLogin, mRegister;
-    FragmentManager manager;
     private static long back_pressed;
 
     @Override

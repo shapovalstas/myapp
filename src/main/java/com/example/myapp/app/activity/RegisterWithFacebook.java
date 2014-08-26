@@ -29,7 +29,6 @@ public class RegisterWithFacebook extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard);
 
         Session.openActiveSession(this, true, new Session.StatusCallback() {
 
@@ -56,8 +55,17 @@ public class RegisterWithFacebook extends Activity {
                                 userFunction.logoutUser(getApplicationContext());
                                 db.addUser(user.getFirstName(), user.getLastName(),user.getProperty("email").toString(),user.getId(),"data");
 
-                                TextView welcome = (TextView) findViewById(R.id.firstandlast);
-                                welcome.setText("Hello " + user.getName() + "!");
+                                Intent dashboard = new Intent(getApplicationContext(), DashboardActivity.class);
+
+                                // Close all views before launching Dashboard
+                                dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(dashboard);
+//                                TextView welcome = (TextView) findViewById(R.id.firstandlast);
+//                                welcome.setText("Hello " + user.getName() + "!");
+
+                                // Close Login Screen
+                                finish();
+
                             }
                         }
                     }).executeAsync();

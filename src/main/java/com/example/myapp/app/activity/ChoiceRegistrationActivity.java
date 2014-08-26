@@ -40,7 +40,9 @@ public class ChoiceRegistrationActivity extends Activity implements OnClickListe
         setContentView(R.layout.signup_social);
         btnEmail = (Button) findViewById(R.id.btnEmail);
         btnFacebook = (LoginButton) findViewById(R.id.btnFb);
+        btnGooglePlus = (Button) findViewById(R.id.btnGplus);
         btnFacebook.setOnClickListener(this);
+        btnGooglePlus.setOnClickListener(this);
         btnEmail.setOnClickListener(this);
 //        firstName = (EditText) findViewById(R.id.first_name);
 //        lastName = (EditText) findViewById(R.id.last_name);
@@ -62,12 +64,16 @@ public class ChoiceRegistrationActivity extends Activity implements OnClickListe
                 finish();
                 break;
             case R.id.btnFb:
-                btnFacebook.setReadPermissions(Arrays.asList("basic_info","email"));
                 Intent facebook = new Intent(this, RegisterWithFacebook.class);
-//                facebook.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(facebook);
                 overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
                 finish();
+                break;
+            case R.id.btnGplus:
+//                Intent gplus = new Intent(this, RegisterWithGoogle.class);
+//                startActivity(gplus);
+//                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+//                finish();
                 break;
             default:
                 break;

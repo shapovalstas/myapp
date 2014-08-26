@@ -42,4 +42,5 @@ dependencies {
     // You must install or update the Support Repository through the SDK manager to use this dependency.
     compile 'com.android.support:support-v4:20.0.+'
     compile 'com.shamanland:facebook-android-sdk:3.15.0-SNAPSHOT'
+    compile 'com.wrapp.floatlabelededittext:library:0.0.3'
 }

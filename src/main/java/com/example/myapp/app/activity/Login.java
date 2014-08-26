@@ -14,10 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -27,6 +24,7 @@ import com.example.myapp.app.utils.DatabaseHandler;
 import com.example.myapp.app.utils.UserFunctions;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 
 public class Login extends Activity implements OnClickListener {
@@ -49,7 +47,7 @@ public class Login extends Activity implements OnClickListener {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         getActionBar().setDisplayHomeAsUpEnabled(true);
